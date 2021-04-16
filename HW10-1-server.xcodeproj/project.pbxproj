@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D154CFA2628D4CA00A56DC5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D154CF92628D4CA00A56DC5 /* main.cpp */; };
+		2D154CFA2628D4CA00A56DC5 /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D154CF92628D4CA00A56DC5 /* server.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2D154CF62628D4CA00A56DC5 /* HW10-1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "HW10-1"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D154CF92628D4CA00A56DC5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		2D154CF62628D4CA00A56DC5 /* HW10-1-server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "HW10-1-server"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D154CF92628D4CA00A56DC5 /* server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 		2D154CF72628D4CA00A56DC5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2D154CF62628D4CA00A56DC5 /* HW10-1 */,
+				2D154CF62628D4CA00A56DC5 /* HW10-1-server */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -57,7 +57,7 @@
 		2D154CF82628D4CA00A56DC5 /* HW10-1 */ = {
 			isa = PBXGroup;
 			children = (
-				2D154CF92628D4CA00A56DC5 /* main.cpp */,
+				2D154CF92628D4CA00A56DC5 /* server.cpp */,
 			);
 			path = "HW10-1";
 			sourceTree = "<group>";
@@ -65,9 +65,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2D154CF52628D4CA00A56DC5 /* HW10-1 */ = {
+		2D154CF52628D4CA00A56DC5 /* HW10-1-server */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D154CFD2628D4CA00A56DC5 /* Build configuration list for PBXNativeTarget "HW10-1" */;
+			buildConfigurationList = 2D154CFD2628D4CA00A56DC5 /* Build configuration list for PBXNativeTarget "HW10-1-server" */;
 			buildPhases = (
 				2D154CF22628D4CA00A56DC5 /* Sources */,
 				2D154CF32628D4CA00A56DC5 /* Frameworks */,
@@ -77,9 +77,9 @@
 			);
 			dependencies = (
 			);
-			name = "HW10-1";
+			name = "HW10-1-server";
 			productName = "HW10-1";
-			productReference = 2D154CF62628D4CA00A56DC5 /* HW10-1 */;
+			productReference = 2D154CF62628D4CA00A56DC5 /* HW10-1-server */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +95,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2D154CF12628D4CA00A56DC5 /* Build configuration list for PBXProject "HW10-1" */;
+			buildConfigurationList = 2D154CF12628D4CA00A56DC5 /* Build configuration list for PBXProject "HW10-1-server" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -108,7 +108,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2D154CF52628D4CA00A56DC5 /* HW10-1 */,
+				2D154CF52628D4CA00A56DC5 /* HW10-1-server */,
 			);
 		};
 /* End PBXProject section */
@@ -118,7 +118,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D154CFA2628D4CA00A56DC5 /* main.cpp in Sources */,
+				2D154CFA2628D4CA00A56DC5 /* server.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +259,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2D154CF12628D4CA00A56DC5 /* Build configuration list for PBXProject "HW10-1" */ = {
+		2D154CF12628D4CA00A56DC5 /* Build configuration list for PBXProject "HW10-1-server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D154CFB2628D4CA00A56DC5 /* Debug */,
@@ -268,7 +268,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D154CFD2628D4CA00A56DC5 /* Build configuration list for PBXNativeTarget "HW10-1" */ = {
+		2D154CFD2628D4CA00A56DC5 /* Build configuration list for PBXNativeTarget "HW10-1-server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D154CFE2628D4CA00A56DC5 /* Debug */,
