@@ -18,21 +18,6 @@ using namespace boost::asio;
 
 std::mutex g_mutex;
 
-std::string read_name(ip::tcp::socket & socket)
-{
-    streambuf buffer;
-
-    read_until(socket, buffer, ':');
-
-    std::string message;
-
-    std::istream i_stream(& buffer);
-    
-    std::getline(i_stream, message, ':');
-
-    return message;
-}
-
 void write_data(std::string user_name, ip::tcp::socket & socket_for_name, ip::tcp::socket & socket_for_message)
 {
     std::string message = "message";
@@ -48,9 +33,9 @@ void write_data(std::string user_name, ip::tcp::socket & socket_for_name, ip::tc
             flag_1 = true;
         }
             
-        write(socket_for_name, buffer(user_name + ": "));
+        write(socket_for_name, buffer(user_name + ':'));
             
-        write(socket_for_message, buffer(message + "# "));
+        write(socket_for_message, buffer(message + '#'));
     }
 }
 
@@ -71,9 +56,6 @@ void read_data(std::string own_name, ip::tcp::socket & socket_for_name, ip::tcp:
         std::istream i_stream(& buffer_for_name);
         
         std::getline(i_stream, user_name, ':');
-        
-        std::cout << user_name << std::endl;
-        std::cout << "1111111111111" << std::endl;
         
         if(own_name != user_name)
         {
@@ -116,6 +98,10 @@ int main(int argc, const char * argv[])
     ip::tcp::endpoint endpoint(ip::address_v4::any(), port);
 
     io_service io_service;
+    
+    std::cout << "Enter your name: ";
+    std::string user_name = "name";
+    std::cin >> user_name;
 
     try
     {
@@ -130,8 +116,6 @@ int main(int argc, const char * argv[])
 
         acceptor.accept(socket_for_name);
         acceptor.accept(socket_for_message);
-        
-        std::string user_name = read_name(socket_for_name);
         
         std::thread write_thread(write_data, user_name, std::ref(socket_for_name), std::ref(socket_for_message));
         std::thread read_thread(read_data, user_name, std::ref(socket_for_name), std::ref(socket_for_message));
