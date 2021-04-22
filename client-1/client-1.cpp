@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <mutex>
 
 #include <boost/asio.hpp>
 
@@ -15,70 +16,76 @@
 
 using namespace boost::asio;
 
-bool flag = false;
+std::mutex g_mutex;
 
-void name_tag(ip::tcp::socket & socket)
-{
-    std::cout << "Enter your name: ";
-    
-    std::string user_name;
-    
-    std::cin >> user_name;
-
-    boost::asio::write(socket, boost::asio::buffer(user_name  + ": "));
-}
-
-void write_data(ip::tcp::socket & socket)
+void write_data(std::string user_name, ip::tcp::socket & socket_for_name, ip::tcp::socket & socket_for_message)
 {
     std::string message = "message";
     
-    std::cin >> message;
+    bool flag_1 = false;
     
-    if(message == "/exit")
+    while(flag_1 == false)
     {
-        flag = true;
-    }
-
-    write(socket, buffer(message));
-}
-
-std::string read_data(ip::tcp::socket & socket)
-{
-    streambuf buffer;
-    
-    read(socket, buffer);
-    
-    std::string message;
-    
-    std::istream input_stream(& buffer);
-    
-    std::getline(input_stream, message);
-
-    if(message == "/exit")
-    {
-        flag = true;
-    }
-
-    return message;
-}
-
-void write_socket(ip::tcp::endpoint endpoint, ip::tcp::socket w_socket)
-{
-    while (flag == false)
-    {
-        w_socket.connect(endpoint);
+        std::getline(std::cin, message);
         
-        write_data(w_socket);
+        if(message == "/exit")
+        {
+            flag_1 = true;
+        }
+            
+        write(socket_for_name, buffer(user_name + ':'));
+            
+        write(socket_for_message, buffer(message + '#'));
     }
 }
 
-void read_socket(ip::tcp::endpoint endpoint, ip::tcp::socket r_socket)
+void read_data(std::string own_name, ip::tcp::socket & socket_for_name, ip::tcp::socket & socket_for_message)
 {
-    while (flag == false)
+    bool flag_2 = false;
+    
+    while(flag_2 == false)
     {
-        r_socket.connect(endpoint);
+        bool flag = false;
         
-        std::cout << read_data(r_socket) << std::endl;
+        streambuf buffer_for_name;
+        
+        read_until(socket_for_name, buffer_for_name, ':');
+        
+        std::string user_name;
+        
+        std::istream i_stream(& buffer_for_name);
+        
+        std::getline(i_stream, user_name, ':');
+        
+        if(own_name != user_name)
+        {
+            flag = true;
+        }
+        
+        if(flag == true)
+        {
+            std::scoped_lock < std::mutex > lock(g_mutex);
+            
+            streambuf buffer;
+            
+            read_until(socket_for_message, buffer, '#');
+            
+            std::string message;
+            
+            std::istream i_stream(& buffer);
+            
+            std::getline(i_stream, message, '#');
+            
+            if(message == "/exit")
+            {
+                flag_2 = true;
+            }
+            else
+            {
+                std::cout << user_name + ": " + message << std::endl;
+            }
+            flag = false;
+        }
     }
 }
 
@@ -87,6 +94,10 @@ int main(int argc, const char * argv[])
     std::string raw_ip_address = "127.0.0.1";
 
     auto port = 7711;
+    
+    std::cout << "Enter your name: ";
+    std::string user_name = "name";
+    std::cin >> user_name;
 
     try
     {
@@ -94,14 +105,14 @@ int main(int argc, const char * argv[])
 
         io_service io_service;
 
-        ip::tcp::socket w_socket(io_service, endpoint.protocol());
-        ip::tcp::socket r_socket(io_service, endpoint.protocol());
+        ip::tcp::socket socket_for_name(io_service, endpoint.protocol());
+        ip::tcp::socket socket_for_message(io_service, endpoint.protocol());
 
-        w_socket.connect(endpoint);
-        name_tag(w_socket);
+        socket_for_name.connect(endpoint);
+        socket_for_message.connect(endpoint);
 
-        std::thread write_thread = std::thread(write_socket, endpoint, w_socket);;
-        std::thread read_thread = std::thread(read_socket, endpoint, r_socket);;
+        std::thread write_thread(write_data, user_name, std::ref(socket_for_name), std::ref(socket_for_message));
+        std::thread read_thread(read_data, user_name, std::ref(socket_for_name), std::ref(socket_for_message));
             
         write_thread.join();
         read_thread.join();
